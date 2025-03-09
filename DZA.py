@@ -4,17 +4,21 @@ from datetime import datetime
 app = Flask(__name__)
 
 @app.route("/")
-def index():
-    current_time = datetime.now().strftime("%d %B %Y, %H:%M:%S")
-    return render_template("index.html", current_time=current_time)
+def home():
 
-@app.route("/blog")
-def blog():
-    return render_template("blog.html")
+    return render_template("home.html")
+
+
+@app.route("/about")
+def about():
+
+    return render_template("about.html")
 
 @app.route("/contacts")
 def contacts():
+
     return render_template("contacts.html")
+
 
 if __name__ == "__main__":
     app.run()
