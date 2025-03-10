@@ -1,0 +1,148 @@
+<!DOCTYPE html><!-- все то же самое что base, только добавлена кнопка переключения тем плюс скрипт -->
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body data-bs-theme="dark"> <!-- Темная тема по умолчанию -->
+
+<header>
+    <nav class="navbar navbar-expand-lg custom-navbar text-light" style="height: 70px;">
+        <div class="container-fluid">
+            <!-- Логотип -->
+            <a class="navbar-brand" href="/">
+                <img src="{{ url_for('static', filename='image/logo.jpg') }}" alt="Логотип" height="50">
+            </a>
+
+            <!-- Кнопка для мобильного меню -->
+            <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Переключатель навигации">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Меню -->
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" href="/">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/about">О нас</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false"> Работы </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Подготовка поверхностей</a></li>
+                            <li><a class="dropdown-item" href="#">Декоративные штукатурки</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/contacts">Что-то еще здесь</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- Кнопки справа -->
+                <div class="d-flex">
+                    <a href="tel:+79991234567" class="btn btn-outline-light me-2">📞 Телефон</a>
+                    <a href="https://t.me/username" target="_blank" class="btn btn-outline-light me-2">
+                        <img src="{{ url_for('static', filename='image/telegram.png') }}" alt="Telegram" class="icon" height="30">
+                        Telegram
+                    </a>
+                    <a href="https://wa.me/79991234567?text=Здравствуйте,%20я%20хочу%20узнать%20подробнее!"
+                       target="_blank" class="btn btn-outline-light">
+                        <img src="{{ url_for('static', filename='image/whatsapp.png') }}" alt="WhatsApp" class="icon" height="30">
+                        WhatsApp
+                    </a>
+
+                    <!-- Кнопка переключения темы -->
+                    <!-- Кнопка переключения темы -->
+                        <div class="dropdown ms-3">
+                            <button class="btn btn-outline-light dropdown-toggle" type="button" id="themeDropdown"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                🎨 Тема
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" id="themeSwitcher">
+                                <li>
+                                    <button type="button" class="dropdown-item d-flex align-items-center"
+                                            data-bs-theme-value="light">
+                                        <svg class="bi me-2 opacity-50 theme-icon"><use href="#sun-fill"></use></svg>
+                                        Светлая
+                                        <svg class="bi ms-auto d-none check-icon"><use href="#check2"></use></svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item d-flex align-items-center active"
+                                            data-bs-theme-value="dark">
+                                        <svg class="bi me-2 opacity-50 theme-icon"><use href="#moon-stars-fill"></use></svg>
+                                        Тёмная
+                                        <svg class="bi ms-auto check-icon"><use href="#check2"></use></svg>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item d-flex align-items-center"
+                                            data-bs-theme-value="auto">
+                                        <svg class="bi me-2 opacity-50 theme-icon"><use href="#circle-half"></use></svg>
+                                        Авто
+                                        <svg class="bi ms-auto d-none check-icon"><use href="#check2"></use></svg>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="container my-4">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="bg-dark text-light text-center small-footer py-3">
+    <p class="mb-0">&copy; 2024 CryptoSite. Все права защищены.</p>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const themeButtons = document.querySelectorAll("[data-bs-theme-value]");
+        const currentTheme = localStorage.getItem("theme") || "dark"; // По умолчанию - темная тема
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute("data-bs-theme", theme);
+            localStorage.setItem("theme", theme);
+
+            // Убираем класс "active" и скрываем галочки
+            themeButtons.forEach(btn => {
+                btn.classList.remove("active");
+                btn.querySelector(".check-icon").classList.add("d-none");
+            });
+
+            // Назначаем активную тему
+            const activeButton = document.querySelector(`[data-bs-theme-value="${theme}"]`);
+            activeButton.classList.add("active");
+            activeButton.querySelector(".check-icon").classList.remove("d-none");
+        }
+
+        // Устанавливаем тему при загрузке страницы
+        applyTheme(currentTheme);
+
+        // Добавляем обработчики кликов
+        themeButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const selectedTheme = this.getAttribute("data-bs-theme-value");
+                applyTheme(selectedTheme);
+            });
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

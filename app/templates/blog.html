@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Форма</title>
+</head>
+<body>
+<!-- создает класс container -->
+    <div class="container">
+        <h1>Форма обратной связи</h1>
+        <!-- #создает форму с методом POST, чтобы отправлять данные из этой формы -->
+        <!--  -->
+        <form method="POST" action="/">
+            <div class="form-group">
+                <label for="name">Имя:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="city">Город:</label>
+                <input type="text" class="form-control" id="city" name="city" required>
+            </div>
+               <div class="form-group">
+                <label for="hobby">Хобби:</label>
+                <input type="text" class="form-control" id="hobby" name="hobby" required>
+            </div>
+
+               <div class="form-group">
+                <label for="age">Возраст:</label>
+                <input type="number" class="form-control" id="age" name="age" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить данные</button>
+        </form>
+        <hr>
+       <!-- #использует цикл for, чтобы иметь возможность публиковать посты -->
+        <h2>Карточка</h2>
+        {% for post in posts %}
+        <!-- #создает отдельный div, внутри которого записываются заголовки и текст  -->
+        <div class="post">
+
+            <h4>{{ post.name }}</h4>
+            <p>{{ post.city }}</p>
+            <p>{{ post.hobby }}</p>
+            <p>{{ post.age }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- #подключает Bootstrap для стилизации -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
